@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">code</string>
+
+
+    <string name="confirm">onaylamak</string>
+    <string name="cancel">iptal edildi</string>
+    <string name="permission_tip">Xxx izinlerine ihtiyacınız var \nUygulama detaylarına gitmek için Tamam a tıklayın</string>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 状态栏高度 -->
+    <dimen name="statusBarHeight">0dp</dimen>
+    <!-- actionbar高度 -->
+    <dimen name="actionBarHeight">46dp</dimen>
+
+    <!--Toast-->
+    <dimen name="textSize_toast">16sp</dimen>
+    <dimen name="padding_toast">10dp</dimen>
+
+    <!--topBar-->
+<!--    <dimen name="size_topBar_leftIcon">18dp</dimen>-->
+<!--    <dimen name="size_topBar_rightIcon">22dp</dimen>-->
+<!--    <dimen name="size_topBar_titleIcon">12dp</dimen>-->
+<!--    <dimen name="topBar_titleIcon_margin">8dp</dimen>-->
+<!--    <dimen name="diverHeight_topBar">0.45dp</dimen>-->
+<!--    <dimen name="textSize_title">18sp</dimen>-->
+<!--    <dimen name="textSize_right">14sp</dimen>-->
+<!--    <dimen name="textSize_left">14sp</dimen>-->
+<!--    <dimen name="width_topBar_icon_rlt">48dp</dimen>-->
+<!--    <dimen name="topBar_rightText_padding">10dp</dimen>-->
+
+    <dimen name="size_topBarBackImv">20dp</dimen>
+    <dimen name="diverHeight_topBar">0.45dp</dimen>
+    <dimen name="textSize_title">20sp</dimen>
+
+    <!--TipDialog-->
+    <dimen name="tipDialog_width">300dp</dimen>
+    <dimen name="tipDialog_body_marginTop">30dp</dimen>
+    <dimen name="tipDialog_body_padding">10dp</dimen>
+    <dimen name="tipDialog_body_textSize">16sp</dimen>
+    <dimen name="tipDialog_btn_textSize">14sp</dimen>
+    <dimen name="tipDialog_btn_marginTop">26dp</dimen>
+    <dimen name="tipDialog_btn_marginRight">20dp</dimen>
+    <dimen name="tipDialog_btn_marginBottom">16dp</dimen>
+
+    <!--饼状图-->
+    <dimen name="margin_pieChartNormal">200dp</dimen>
+    <dimen name="marginLeft_description">14dp</dimen>
+    <dimen name="marginTop_description">20dp</dimen>
+    <dimen name="textSize_pieData">14sp</dimen>
+    <dimen name="textSize_pieChartCenterText">18sp</dimen>
+    <dimen name="textSize_pieDataName">12sp</dimen>
+    <dimen name="textSize_description">18sp</dimen>
+
+    <!-- 轮播图圆形指示器的点 -->
+    <dimen name="cycle_width">10dp</dimen>
+    <dimen name="cycle_height">10dp</dimen>
+    <dimen name="cycle_margin">4dp</dimen>
+    <dimen name="cycle_marginBottom">16dp</dimen>
+    <dimen name="cycle_marginRight">16dp</dimen>
+    <dimen name="cycle_marginLeft">16dp</dimen>
+</resources>

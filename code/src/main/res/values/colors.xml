@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--主题颜色-->
+    <color name="themeColor">#4073F2</color>
+
+    <color name="textColor_noSetPieData">#F0AB4E</color>
+    <color name="textColor_description">#F0AB4E</color>
+
+    <!-- 轮播图圆形指示器 -->
+    <color name="cycle_color_normal">#aaa</color>
+    <color name="cycle_color_selected">#3F51B5</color>
+
+    <!-- 微信黑 -->
+    <color name="we_chat_black">#323232</color>
+
+    <color name="white">#ffffffff</color>
+    <color name="black">#000000</color>
+</resources>

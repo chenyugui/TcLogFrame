@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+//// greendao数据库插件
+//apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion project.ANDROID_BUILD_SDK_VERSION as int
+
+    defaultConfig {
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION as int
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile "com.android.support:support-annotations:${SUPPORT_LIBRARY}"
+    // v7
+    compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY}"
+    // design包
+    compile "com.android.support:design:${SUPPORT_LIBRARY}"
+    // cardview
+    compile "com.android.support:cardview-v7:${SUPPORT_LIBRARY}"
+    // fragmentation
+    api('me.yokeyword:fragmentation:1.3.8')
+    api('me.yokeyword:fragmentation-swipeback:1.3.8')
+    // 依赖retrofit2
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:retrofit-converters:2.3.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    // eventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    // 依赖RxJava2
+    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    // RxJava2集合Retrofit2需要的adapter依赖
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+//    // greenDAO数据库依赖
+//    compile 'org.greenrobot:greendao-generator:3.2.2'
+//    compile 'org.greenrobot:greendao:3.2.2'
+    // recyclerview
+    compile "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY}"
+    // 字体图标库
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+    // (AVLoading v4.5)
+    //AVLoader （https://github.com/81813780/AVLoadingIndicatorView）
+    compile 'com.wang.avi:library:2.1.3'
+    // Item侧滑删除
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    // Logger
+    compile 'com.orhanobut:logger:2.1.1'
+    // 沉浸式状态栏工具
+    dependencies {
+        compile ('com.github.niorgai:StatusBarCompat:2.1.4', {
+            exclude group: 'com.android.support'
+        })
+    }
+}
+

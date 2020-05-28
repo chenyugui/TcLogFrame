@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="toolbar_leftText" type="id" />
+    <item name="toolbar_rightText" type="id" />
+
+    <!-- 显示fragment的view的id-->
+    <item name="delegate_container" type="id" />
+</resources>

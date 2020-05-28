@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">code</string>
+
+
+    <string name="confirm">подтвердить</string>
+    <string name="cancel">Отмена</string>
+    <string name="permission_tip">Need xxx permissions,\nClick OK to go to app details Open permissions</string>
+</resources>

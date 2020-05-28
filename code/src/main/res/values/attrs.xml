@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MToolBar">
+        <attr name="leftIcon" format="reference" />
+        <attr name="rightIcon" format="reference" />
+        <attr name="rightSecondIcon" format="reference" />
+        <attr name="titleIcon" format="reference" />
+        <attr name="titleLeftIcon" format="reference" />
+        <attr name="mTitleText" format="string" />
+        <!-- 是否显示状态栏View -->
+        <attr name="showStatusBar" format="boolean" />
+        <!-- 状态栏和toolbar的背景颜色 -->
+        <attr name="mBackGroundColor" format="color" />
+        <!-- 标题字体大小 -->
+        <attr name="mTitleTextSize" format="dimension" />
+        <!-- 标题字体颜色 -->
+        <attr name="mTitleTextColor" format="color" />
+        <!-- 左边字体颜色 -->
+        <attr name="leftTextColor" format="color" />
+        <!-- 右边字体颜色 -->
+        <attr name="rightTextColor" format="color" />
+        <!-- 状态栏背景颜色 -->
+        <attr name="statusBarBackgroundColor" format="color" />
+        <attr name="leftText" format="string" />
+        <attr name="rightText" format="string" />
+        <attr name="leftTextSize" format="dimension" />
+        <attr name="rightTextSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="VerticalSeekBar">
+        <attr name="seekBarRotation">
+            <!-- Clock wise - 90 deg; top = min, bottom = max -->
+            <enum name="CW90" value="90" />
+            <!-- Clock wise - 270 deg; bottom = min, top = max -->
+            <enum name="CW270" value="270" />
+        </attr>
+    </declare-styleable>
+</resources>

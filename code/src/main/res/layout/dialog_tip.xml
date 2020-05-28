@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/vg_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FAFAFA">
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/vg_content"-->
+    <!--android:layout_width="@dimen/tipDialog_width"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="#FAFAFA">-->
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/tipDialog_body_marginTop"
+        android:padding="@dimen/tipDialog_body_padding"
+        android:textColor="#000000"
+        android:textSize="@dimen/tipDialog_body_textSize"
+        tool:text="@string/permission_tip" />
+
+    <TextView
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_tip"
+        android:layout_marginBottom="@dimen/tipDialog_btn_marginBottom"
+        android:layout_marginLeft="@dimen/tipDialog_btn_marginRight"
+        android:layout_marginRight="@dimen/tipDialog_btn_marginRight"
+        android:layout_marginTop="@dimen/tipDialog_btn_marginTop"
+        android:text="@string/confirm"
+        android:textColor="#000000"
+        android:textSize="@dimen/tipDialog_btn_textSize" />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btn_confirm"
+        android:layout_below="@+id/tv_tip"
+        android:layout_toLeftOf="@+id/btn_confirm"
+        android:text="@string/cancel"
+        android:textColor="#000000"
+        android:textSize="@dimen/tipDialog_btn_textSize" />
+    <!--</RelativeLayout>-->
+
+</RelativeLayout>

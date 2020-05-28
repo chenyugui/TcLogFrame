@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ProjectSetting</string>
+
+
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_tip">Need xxx permissions,\nClick OK to go to app details Open permissions</string>
+</resources>

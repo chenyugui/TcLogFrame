@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">code</string>
+
+
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="permission_tip">需要xxx权限,\n点击确定跳转到应用详情打开权限</string>
+</resources>
