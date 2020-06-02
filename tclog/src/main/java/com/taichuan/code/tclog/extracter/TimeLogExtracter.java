@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.thread.TcLogGlobalThreadManager;
 import com.taichuan.code.tclog.util.FileUtil;
-import com.taichuan.code.utils.TimeUtil;
+import com.taichuan.code.tclog.util.TimeUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

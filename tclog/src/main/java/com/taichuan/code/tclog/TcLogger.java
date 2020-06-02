@@ -67,7 +67,10 @@ public class TcLogger {
         }
     }
 
-    public static void extracterFromLogcat(LogExtracter.ExtractCallBack extractCallBack) {
+    /**
+     * 从logcat读取日志
+     */
+    public static void extractFromLogcat(LogExtracter.ExtractCallBack extractCallBack) {
         LogExtracter logExtracter = new LogcatExtracter();
         logExtracter.extract(extractCallBack);
     }
@@ -77,7 +80,7 @@ public class TcLogger {
      *
      * @param dateString 日期，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      */
-    public static void extracterByDate(final String dateString, final LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractByDay(final String dateString, final LogExtracter.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");
@@ -105,8 +108,8 @@ public class TcLogger {
      *
      * @param beginTime 开始时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      */
-    public static void extracterByTime(String beginTime, LogExtracter.ExtractCallBack extractCallBack) {
-        extracterByTime(beginTime, null, extractCallBack);
+    public static void extractByTime(String beginTime, LogExtracter.ExtractCallBack extractCallBack) {
+        extractByTime(beginTime, null, extractCallBack);
     }
 
     /**
@@ -115,7 +118,7 @@ public class TcLogger {
      * @param beginTime 开始时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      * @param endTime   结束时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-25"
      */
-    public static void extracterByTime(final String beginTime, final String endTime, final LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractByTime(final String beginTime, final String endTime, final LogExtracter.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");
@@ -139,16 +142,18 @@ public class TcLogger {
     }
 
     /**
-     * 获取异常日志
+     * 获取全部异常日志
      */
-    public static void extracterCrashLog(LogExtracter.ExtractCallBack extractCallBack) {
-        extracterCrashLog(0, extractCallBack);
+    public static void extractCrashLog(LogExtracter.ExtractCallBack extractCallBack) {
+        extractCrashLog(0, extractCallBack);
     }
 
     /**
      * 获取异常日志
+     *
+     * @param extracterCount 提取的日志数量
      */
-    public static void extracterCrashLog(int extracterCount, LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractCrashLog(int extracterCount, LogExtracter.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");

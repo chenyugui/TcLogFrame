@@ -38,11 +38,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         int id = v.getId();
         if (id == R.id.btnWrite) {
             for (int i = 0; i < 1000; i++) {
-                TcLogger.d(TAG, i+"  陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂" + i);
-//                Log.d(TAG, i+"  陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂" + i);
+                TcLogger.d(TAG, i+"  ");
             }
         } else if (id == R.id.btnRead) {
-            TcLogger.extracterByTime("2020-05-20", new LogExtracter.ExtractCallBack() {
+            TcLogger.extractByTime("2020-05-20", new LogExtracter.ExtractCallBack() {
                 @Override
                 public void onSuccess(final File logFile) {
                     Log.d(TAG, "extract onSuccess: ");
@@ -62,7 +61,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else if (id == R.id.btnTestCrash) {
             throw new RuntimeException("333333");
         } else if (id == R.id.btnReadCrash) {
-            TcLogger.extracterCrashLog(new LogExtracter.ExtractCallBack() {
+            TcLogger.extractCrashLog(new LogExtracter.ExtractCallBack() {
                 @Override
                 public void onSuccess(final File logFile) {
                     Log.d(TAG, "extract onSuccess: ");

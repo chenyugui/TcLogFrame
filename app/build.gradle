@@ -8,7 +8,7 @@ android {
         minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION as int
         versionCode 10000
-        versionName "V1.0.0_build20200509"
+        versionName "V1.0.0_build20200602"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

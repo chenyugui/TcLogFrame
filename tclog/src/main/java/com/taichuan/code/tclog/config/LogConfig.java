@@ -69,7 +69,7 @@ public class LogConfig {
         this.crashPath = crashPath;
     }
 
-    public static Builder builderr() {
+    public static Builder builder() {
         return new Builder();
     }
 

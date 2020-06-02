@@ -21,7 +21,7 @@ public class LogConfigUtil {
 
 
     public static LogConfig createLogConfig() {
-        LogConfig logConfig = LogConfig.builderr()
+        LogConfig logConfig = LogConfig.builder()
                 .useCache(true, CACHE_MAX_SIZE)
                 .useDiskSave(true, LOG_DIR_MAX_SIZE, DIR_PATH)
                 .useCrashSave(true, CRASH_MAX_SIZE, CRASH_LOG_FILE_PATH)

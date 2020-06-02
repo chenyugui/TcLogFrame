@@ -7,7 +7,7 @@ android {
         minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION as int
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0_build20200602"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -26,7 +26,7 @@ dependencies {
     implementation "com.android.support:support-annotations:${SUPPORT_LIBRARY}"
     // guava
     implementation('com.google.guava:guava:27.0.1-android')
-    implementation project(path: ':code')
+//    implementation project(path: ':code')
 
 
 //    testImplementation 'junit:junit:4.12'
