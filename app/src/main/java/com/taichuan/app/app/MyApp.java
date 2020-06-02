@@ -27,7 +27,7 @@ public class MyApp extends Application {
                 .debug(true)
 //                .stackViewMode(Fragmentation.BUBBLE)
                 .install();
-        LogConfig logConfig = LogConfigUtil.createLogConfig(this);
+        LogConfig logConfig = LogConfigUtil.createLogConfig();
         TcLogger.init(logConfig);
 
         CrashHandler crashHandler = new CrashHandler(this);

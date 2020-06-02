@@ -12,7 +12,6 @@ import com.taichuan.code.tclog.exception.WriteLogErrException;
 import com.taichuan.code.tclog.writer.CacheLogWriter;
 import com.taichuan.code.tclog.writer.CrashLogWriter;
 import com.taichuan.code.tclog.writer.DiskLogWriter;
-import com.taichuan.code.tclog.writer.DiskWriteLogQueue;
 import com.taichuan.code.tclog.writer.LogWriter;
 
 import java.io.PrintWriter;
@@ -26,7 +25,10 @@ import java.util.List;
  */
 public class LogWriteLogic {
     private LogConfig logConfig;
+    private CacheLogWriter cacheLogWriter;
     private DiskWriteLogQueue diskWriteLogQueue;
+
+    private static final Object LOCK = new Object();
 
     public LogWriteLogic(LogConfig logConfig) {
         this.logConfig = logConfig;
@@ -46,9 +48,9 @@ public class LogWriteLogic {
             if (packageInfo != null) {
                 String versionName = packageInfo.versionName == null ? "null" : packageInfo.versionName;
                 String versionCode = packageInfo.versionCode + "";
-                sb.append("\n");
-                sb.append("versionName" + "=").append(versionName).append("\n");
-                sb.append("versionCode" + "=").append(versionCode).append("\n");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("versionName" + "=").append(versionName).append(System.getProperty("line.separator"));
+                sb.append("versionCode" + "=").append(versionCode).append(System.getProperty("line.separator"));
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -81,7 +83,11 @@ public class LogWriteLogic {
             Log.e(tag, content);
         }
         if (logConfig.isUseCache()) {
-            CacheLogWriter cacheLogWriter = new CacheLogWriter(logConfig);
+            synchronized (LOCK) {
+                if (cacheLogWriter == null) {
+                    cacheLogWriter = new CacheLogWriter(logConfig);
+                }
+            }
             try {
                 cacheLogWriter.write(logVersion, tag, content);
             } catch (WriteLogErrException e) {
@@ -110,4 +116,38 @@ public class LogWriteLogic {
         }
     }
 
+    public boolean isHaveCache() {
+        if (!logConfig.isUseCache() || cacheLogWriter == null) {
+            return false;
+        }
+        List<com.taichuan.code.tclog.bean.Log> cacheLogList = cacheLogWriter.getCacheLogList();
+        if (cacheLogList == null || cacheLogList.size() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public void flushCache() {
+        if (logConfig.isUseCache() && logConfig.isUseDiskSave() && cacheLogWriter != null) {
+            DiskLogWriter diskLogWriter = new DiskLogWriter(diskWriteLogQueue);
+            List<com.taichuan.code.tclog.bean.Log> cacheLogList = cacheLogWriter.getCacheLogList();
+            for (int i = 0; i < cacheLogList.size(); i++) {
+                com.taichuan.code.tclog.bean.Log log = cacheLogList.get(i);
+                diskLogWriter.write(log);
+            }
+            cacheLogWriter.clearCache();
+        }
+    }
+
+    public void addOnDiskWriteFinishListener(OnDiskWriteFinishListener onDiskWriteFinishListener) {
+        if (logConfig.isUseDiskSave()) {
+            diskWriteLogQueue.addOnDiskWriteFinishListener(onDiskWriteFinishListener);
+        }
+    }
+
+    public void removeOnDiskWriteFinishListener(OnDiskWriteFinishListener onDiskWriteFinishListener) {
+        if (logConfig.isUseDiskSave()) {
+            diskWriteLogQueue.removeOnDiskWriteFinishListener(onDiskWriteFinishListener);
+        }
+    }
 }

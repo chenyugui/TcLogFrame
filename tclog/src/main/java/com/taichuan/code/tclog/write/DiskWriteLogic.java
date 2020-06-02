@@ -24,19 +24,17 @@ import java.util.List;
 public class DiskWriteLogic {
     private final String TAG = getClass().getSimpleName();
     private String dirPath;
-    private String dirName;
     private String dateFormat;
     private long dirMaxSize;
 
-    public DiskWriteLogic(String dirPath, String dirName, String dateFormat, long dirMaxSize) {
+    public DiskWriteLogic(String dirPath, String dateFormat, long dirMaxSize) {
         this.dirPath = dirPath;
-        this.dirName = dirName;
         this.dateFormat = dateFormat;
         this.dirMaxSize = dirMaxSize;
     }
 
     public void write(final Log log) {
-        final File dir = new File(dirPath, dirName);
+        final File dir = new File(dirPath);
         if (dir.exists()) {
             checkCleanLog(dir, dirMaxSize / 2);
         }
@@ -68,7 +66,6 @@ public class DiskWriteLogic {
             }
             outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
             outputStreamWriter.write(getLogFullContent(log));
-            System.out.println("writed log");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -118,7 +115,6 @@ public class DiskWriteLogic {
             }
         }
         if (dirLength < targetLength) {
-            System.out.println("本来就已经比目标大小小");
             return;
         }
         // 先按文件名排序
@@ -135,12 +131,12 @@ public class DiskWriteLogic {
                 break;
             }
         }
+        System.out.println("磁盘log内存已满，需要清除" + fileListToClean.size() + "个文件");
         for (File file : fileListToClean) {
             if (file.exists()) {
                 file.delete();
             }
         }
-//        cleanSuccess(cleanLogCallBack);
     }
 
 
@@ -151,7 +147,7 @@ public class DiskWriteLogic {
         String tag = log.getTag();
         String content = log.getContent();
         String version = getVersionStr(log.getLogVersion());
-        return String.format("%s %s/-%s-/%s: %s", time, threadName, version, tag, content) + "\n";
+        return String.format("%s %s/-%s-/%s: %s", time, threadName, version, tag, content) + System.getProperty("line.separator");
     }
 
     private String getVersionStr(@LogVersion int version) {

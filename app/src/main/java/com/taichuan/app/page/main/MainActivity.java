@@ -1,6 +1,5 @@
 package com.taichuan.app.page.main;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -28,17 +27,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onBindView(@Nullable Bundle savedInstanceState) {
-        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new OnPermissionResultListener() {
-            @Override
-            public void onAllow() {
-
-            }
-
-            @Override
-            public void onReject() {
-
-            }
-        });
         findView(R.id.btnWrite).setOnClickListener(this);
         findView(R.id.btnRead).setOnClickListener(this);
         findView(R.id.btnTestCrash).setOnClickListener(this);
@@ -49,12 +37,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btnWrite) {
-            TcLogger.d(TAG, "陈裕桂");
-//            for (int i = 0; i < 10; i++) {
-//                TcLogger.d(TAG, "陈裕桂 " + i);
-//            }
+            for (int i = 0; i < 1000; i++) {
+                TcLogger.d(TAG, i+"  陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂" + i);
+//                Log.d(TAG, i+"  陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂陈裕桂" + i);
+            }
         } else if (id == R.id.btnRead) {
-            TcLogger.extracterByDate("2020-05-20", new LogExtracter.ExtractCallBack() {
+            TcLogger.extracterByTime("2020-05-20", new LogExtracter.ExtractCallBack() {
                 @Override
                 public void onSuccess(final File logFile) {
                     Log.d(TAG, "extract onSuccess: ");

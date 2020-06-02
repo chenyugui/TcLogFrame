@@ -1,6 +1,7 @@
 package com.taichuan.code.tclog.writer;
 
 import com.taichuan.code.tclog.bean.Log;
+import com.taichuan.code.tclog.write.DiskWriteLogQueue;
 
 /**
  * @author gui

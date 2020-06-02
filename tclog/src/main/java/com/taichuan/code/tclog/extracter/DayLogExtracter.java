@@ -20,12 +20,12 @@ import java.util.List;
  * @date 2020/5/19
  * 按日期Log提取器
  */
-public class DateExtracter extends BaseLogExtracter {
-    private String dateString;
+public class DayLogExtracter extends BaseLogExtracter {
+    private String dayString;
     private LogConfig logConfig;
 
-    public DateExtracter(String dateString, LogConfig logConfig) {
-        this.dateString = dateString;
+    public DayLogExtracter(String dayString, LogConfig logConfig) {
+        this.dayString = dayString;
         this.logConfig = logConfig;
     }
 
@@ -40,19 +40,18 @@ public class DateExtracter extends BaseLogExtracter {
             return;
         }
         final String dirPath = logConfig.getDirPath();
-        final String dirName = logConfig.getDirName();
-        if (TextUtils.isEmpty(dirPath) || TextUtils.isEmpty(dirName)) {
+        if (TextUtils.isEmpty(dirPath)) {
             extractFail("dir err", extractCallBack);
             return;
         }
-        if (dateString == null || dateString.length() != "yyyy-MM-hh".length()) {
+        if (dayString == null || dayString.length() != "yyyy-MM-dd_HH".length()) {
             extractFail("dateString err", extractCallBack);
             return;
         }
         TcLogGlobalThreadManager.getInstance().addRun(new Runnable() {
             @Override
             public void run() {
-                File logDirFile = new File(dirPath, dirName);
+                File logDirFile = new File(dirPath);
                 if (!logDirFile.exists()) {
                     extractFail("no log", extractCallBack);
                     return;
@@ -64,7 +63,7 @@ public class DateExtracter extends BaseLogExtracter {
                 }
                 List<File> targetFileList = new ArrayList<>();
                 for (File logFile : logFileList) {
-                    if (logFile.isFile() && logFile.getName().startsWith(dateString)) {
+                    if (logFile.isFile() && logFile.getName().startsWith(dayString)) {
                         targetFileList.add(logFile);
                     }
                 }

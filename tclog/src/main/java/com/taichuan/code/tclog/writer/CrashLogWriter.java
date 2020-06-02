@@ -12,7 +12,7 @@ public class CrashLogWriter extends BaseLogWriter implements LogWriter {
     private LogConfig logConfig;
 
     public CrashLogWriter(LogConfig logConfig) {
-        if (logConfig == null || logConfig.getCrashPath() == null || logConfig.getCrashName() == null) {
+        if (logConfig == null || logConfig.getCrashPath() == null) {
             throw new RuntimeException("logConfig err");
         }
         this.logConfig = logConfig;
@@ -26,7 +26,7 @@ public class CrashLogWriter extends BaseLogWriter implements LogWriter {
 
     @Override
     public void write(final Log log) {
-        DiskWriteLogic diskWriteLogic = new DiskWriteLogic(logConfig.getCrashPath(), logConfig.getCrashName(), null, logConfig.getCrashMaxSize());
+        DiskWriteLogic diskWriteLogic = new DiskWriteLogic(logConfig.getCrashPath(), null, logConfig.getCrashMaxSize());
         diskWriteLogic.write(log);
     }
 }

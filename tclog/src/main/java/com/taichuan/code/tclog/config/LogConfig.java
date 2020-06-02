@@ -17,12 +17,8 @@ public class LogConfig {
     private long crashMaxSize;
     /*** 存储log的文件夹的路径 */
     private String dirPath;
-    /*** 存储log的文件夹的名称 */
-    private String dirName;
     /*** 存储奔溃日志的文件夹的路径 */
     private String crashPath;
-    /*** 存储奔溃日志的文件夹的名称 */
-    private String crashName;
     /*** 是否使用内存缓存 */
     private boolean isUseCache;
     /*** 是否使用磁盘存储 */
@@ -42,10 +38,6 @@ public class LogConfig {
         return dirPath;
     }
 
-    public String getDirName() {
-        return dirName;
-    }
-
     public boolean isUseCache() {
         return isUseCache;
     }
@@ -62,15 +54,11 @@ public class LogConfig {
         return crashPath;
     }
 
-    public String getCrashName() {
-        return crashName;
-    }
-
     public boolean isUseCrashSave() {
         return isUseCrashSave;
     }
 
-    private LogConfig(boolean isUseCache, boolean isUseDiskSave, boolean isUseCrashSave, long dirMaxSize, long cacheMaxSize, long crashMaxSize, String dirPath, String dirName, String crashPath, String crashName) {
+    private LogConfig(boolean isUseCache, boolean isUseDiskSave, boolean isUseCrashSave, long dirMaxSize, long cacheMaxSize, long crashMaxSize, String dirPath, String crashPath) {
         this.isUseCache = isUseCache;
         this.isUseDiskSave = isUseDiskSave;
         this.isUseCrashSave = isUseCrashSave;
@@ -78,9 +66,7 @@ public class LogConfig {
         this.cacheMaxSize = cacheMaxSize;
         this.crashMaxSize = crashMaxSize;
         this.dirPath = dirPath;
-        this.dirName = dirName;
         this.crashPath = crashPath;
-        this.crashName = crashName;
     }
 
     public static Builder builderr() {
@@ -95,9 +81,7 @@ public class LogConfig {
         private long cacheMaxSize;
         private long crashMaxSize;
         private String dirPath;
-        private String dirName;
         private String crashDirPath;
-        private String crashDirName;
 
         /**
          * @param isUseCache   是否使用内存缓存
@@ -113,11 +97,10 @@ public class LogConfig {
          * @param isUseDiskSave 是否使用内磁盘缓存
          * @param dirMaxSize    log磁盘缓存的最大容量(单位字节)
          */
-        public Builder useDiskSave(boolean isUseDiskSave, long dirMaxSize, String dirPath, String dirName) {
+        public Builder useDiskSave(boolean isUseDiskSave, long dirMaxSize, String dirPath) {
             this.isUseDiskSave = isUseDiskSave;
             this.dirMaxSize = dirMaxSize;
             this.dirPath = dirPath;
-            this.dirName = dirName;
             return this;
         }
 
@@ -125,11 +108,10 @@ public class LogConfig {
          * @param isUseCrashSave 是否需要存储奔溃日志
          * @param crashMaxSize   奔溃日志log磁盘缓存的最大容量(单位字节)
          */
-        public Builder useCrashSave(boolean isUseCrashSave, long crashMaxSize, String crashDirPath, String crashDirName) {
+        public Builder useCrashSave(boolean isUseCrashSave, long crashMaxSize, String crashDirPath) {
             this.isUseCrashSave = isUseCrashSave;
             this.crashMaxSize = crashMaxSize;
             this.crashDirPath = crashDirPath;
-            this.crashDirName = crashDirName;
             return this;
         }
 
@@ -139,22 +121,16 @@ public class LogConfig {
                 if (dirPath == null) {
                     dirPath = Environment.getExternalStorageDirectory().getPath() + File.pathSeparator + "taichuan" + File.pathSeparator + "log" + File.pathSeparator;
                 }
-                if (dirName == null) {
-                    dirName = "log";
-                }
             }
             if (isUseCrashSave) {
                 if (crashDirPath == null) {
                     crashDirPath = Environment.getExternalStorageDirectory().getPath() + File.pathSeparator + "taichuan" + File.pathSeparator + "crashLog" + File.pathSeparator;
                 }
-                if (crashDirName == null) {
-                    crashDirName = "log";
-                }
             }
-            if (isUseDiskSave && isUseCrashSave && dirPath.equals(crashDirPath) && dirName.equals(crashDirName)) {
+            if (isUseDiskSave && isUseCrashSave && dirPath.equals(crashDirPath)) {
                 throw new RuntimeException("奔溃日志和普通日志存储路径不能一样");
             }
-            return new LogConfig(isUseCache, isUseDiskSave, isUseCrashSave, dirMaxSize, cacheMaxSize, crashMaxSize, dirPath, dirName, crashDirPath, crashDirName);
+            return new LogConfig(isUseCache, isUseDiskSave, isUseCrashSave, dirMaxSize, cacheMaxSize, crashMaxSize, dirPath, crashDirPath);
         }
     }
 }

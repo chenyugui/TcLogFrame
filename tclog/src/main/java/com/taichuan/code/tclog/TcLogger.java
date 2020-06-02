@@ -6,10 +6,12 @@ import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.enums.LogVersion;
 import com.taichuan.code.tclog.exception.WriteLogErrException;
 import com.taichuan.code.tclog.extracter.CrashLogExtracter;
-import com.taichuan.code.tclog.extracter.DateExtracter;
+import com.taichuan.code.tclog.extracter.DayLogExtracter;
 import com.taichuan.code.tclog.extracter.LogExtracter;
 import com.taichuan.code.tclog.extracter.LogcatExtracter;
+import com.taichuan.code.tclog.extracter.TimeLogExtracter;
 import com.taichuan.code.tclog.write.LogWriteLogic;
+import com.taichuan.code.tclog.write.OnDiskWriteFinishListener;
 
 /**
  * @author gui
@@ -75,15 +77,65 @@ public class TcLogger {
      *
      * @param dateString 日期，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      */
-    public static void extracterByDate(String dateString, LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extracterByDate(final String dateString, final LogExtracter.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");
             }
             return;
         }
-        LogExtracter logExtracter = new DateExtracter(dateString, logConfig);
-        logExtracter.extract(extractCallBack);
+        final LogExtracter logExtracter = new DayLogExtracter(dateString, logConfig);
+        if (logWriteLogic.isHaveCache()) {
+            OnDiskWriteFinishListener onDiskWriteFinishListener = new OnDiskWriteFinishListener() {
+                @Override
+                public void onFinish() {
+                    logExtracter.extract(extractCallBack);
+                    logWriteLogic.removeOnDiskWriteFinishListener(this);
+                }
+            };
+            logWriteLogic.addOnDiskWriteFinishListener(onDiskWriteFinishListener);
+            logWriteLogic.flushCache();
+        } else {
+            logExtracter.extract(extractCallBack);
+        }
+    }
+
+    /**
+     * 根据日期从磁盘里获取log
+     *
+     * @param beginTime 开始时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
+     */
+    public static void extracterByTime(String beginTime, LogExtracter.ExtractCallBack extractCallBack) {
+        extracterByTime(beginTime, null, extractCallBack);
+    }
+
+    /**
+     * 根据日期从磁盘里获取log
+     *
+     * @param beginTime 开始时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
+     * @param endTime   结束时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-25"
+     */
+    public static void extracterByTime(final String beginTime, final String endTime, final LogExtracter.ExtractCallBack extractCallBack) {
+        if (logConfig == null) {
+            if (extractCallBack != null) {
+                extractCallBack.onFail("logConfig is null, please use init method");
+            }
+            return;
+        }
+        final LogExtracter logExtracter = new TimeLogExtracter(beginTime, endTime, logConfig);
+        if (logWriteLogic.isHaveCache()) {
+            OnDiskWriteFinishListener onDiskWriteFinishListener = new OnDiskWriteFinishListener() {
+                @Override
+                public void onFinish() {
+                    logExtracter.extract(extractCallBack);
+                    logWriteLogic.removeOnDiskWriteFinishListener(this);
+                }
+            };
+            logWriteLogic.addOnDiskWriteFinishListener(onDiskWriteFinishListener);
+            logWriteLogic.flushCache();
+        } else {
+            logExtracter.extract(extractCallBack);
+        }
     }
 
     /**

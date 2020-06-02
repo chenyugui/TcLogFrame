@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.thread.TcLogGlobalThreadManager;
 import com.taichuan.code.tclog.util.FileUtil;
+import com.taichuan.code.utils.TimeUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,20 +14,26 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author gui
  * @date 2020/5/19
- * 奔溃日志提取器
+ * 按时间区间提取器。 时间具体到天
  */
-public class CrashLogExtracter extends BaseLogExtracter {
+public class TimeLogExtracter extends BaseLogExtracter {
+    private String beginDayString;
+    private String endDayString;
     private LogConfig logConfig;
-    private int extracterCount;
 
-    public CrashLogExtracter(int extracterCount, LogConfig logConfig) {
-        this.extracterCount = extracterCount;
+    public TimeLogExtracter(String beginDayString, LogConfig logConfig) {
+        this(beginDayString, null, logConfig);
+    }
+
+    public TimeLogExtracter(String beginDayString, String endDayString, LogConfig logConfig) {
+        this.beginDayString = beginDayString;
+        this.endDayString = endDayString;
         this.logConfig = logConfig;
     }
 
@@ -40,9 +47,24 @@ public class CrashLogExtracter extends BaseLogExtracter {
             extractFail("Useless disk", extractCallBack);
             return;
         }
-        final String dirPath = logConfig.getCrashPath();
+        final String dirPath = logConfig.getDirPath();
         if (TextUtils.isEmpty(dirPath)) {
             extractFail("dir err", extractCallBack);
+            return;
+        }
+        if (beginDayString == null || beginDayString.length() != "yyyy-MM-dd".length()) {
+            extractFail("beginDayString err", extractCallBack);
+            return;
+        }
+        if (endDayString != null && endDayString.length() != "yyyy-MM-dd".length()) {
+            extractFail("endDayString err", extractCallBack);
+            return;
+        }
+        if (endDayString == null) {
+            endDayString = TimeUtil.dateToyyyy_MM_dd(new Date());
+        }
+        if (endDayString.compareTo(beginDayString) < 0) {
+            extractFail("beginDayString > endDayString", extractCallBack);
             return;
         }
         TcLogGlobalThreadManager.getInstance().addRun(new Runnable() {
@@ -53,30 +75,32 @@ public class CrashLogExtracter extends BaseLogExtracter {
                     extractFail("no log", extractCallBack);
                     return;
                 }
-                File[] logFileArray = logDirFile.listFiles();
-                if (logFileArray == null || logFileArray.length == 0) {
+                File[] logFileList = logDirFile.listFiles();
+                if (logFileList == null || logFileList.length == 0) {
                     extractFail("no log", extractCallBack);
                     return;
                 }
-                List<File> logFileList = new ArrayList<>(Arrays.asList(logFileArray));
-                if (logFileList.size() == 0) {
-                    extractFail("no log", extractCallBack);
-                    return;
-                }
-                FileUtil.sortFileByNameDecrease(logFileList);
-                List<File> targetLogList;
-                if (extracterCount == 0 || extracterCount >= logFileList.size()) {
-                    targetLogList = logFileList;
-                } else {
-                    targetLogList = new ArrayList<>();
-                    for (int i = 0; i < logFileList.size(); i++) {
-                        if (extracterCount > i) {
-                            targetLogList.add(logFileList.get(i));
-                        } else {
-                            break;
-                        }
+                List<File> targetFileList = new ArrayList<>();
+                for (File logFile : logFileList) {
+                    if (!logFile.isFile()) {
+                        continue;
+                    }
+                    if (logFile.getName().length() <= "yyyy-MM-dd".length()) {
+                        continue;
+                    }
+                    String fileDay = logFile.getName().substring(0, "yyyy-MM-dd".length());
+                    if (fileDay.compareTo(beginDayString) >= 0
+                            && fileDay.compareTo(endDayString) <= 0) {
+                        targetFileList.add(logFile);
                     }
                 }
+                if (targetFileList.size() == 0) {
+                    extractFail("no log", extractCallBack);
+                    return;
+                }
+                FileUtil.sortFileByNameIncrease(targetFileList);
+
+
                 File dir = new File(TEMP_LOG_DIR);
                 if (!dir.exists()) {
                     boolean b = dir.mkdirs();
@@ -95,11 +119,7 @@ public class CrashLogExtracter extends BaseLogExtracter {
                         tempLogFile.delete();
                     }
                     fos = new FileOutputStream(tempLogFile, true);
-
-                    for (File logFile : targetLogList) {
-                        if (!logFile.exists()) {
-                            continue;
-                        }
+                    for (File logFile : targetFileList) {
                         //获取输入流
                         buffRead = new BufferedReader(new FileReader(logFile));
                         // 开始写

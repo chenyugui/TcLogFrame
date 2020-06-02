@@ -343,6 +343,11 @@ public class TimeUtil {
         return dateFormat.format(date);
     }
 
+    public static String dateToyyyy_MM_dd_HH(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH");
+        return dateFormat.format(date);
+    }
+
     public static String dateToMM_dd_HH_mm(Date date) {
         SimpleDateFormat dateformat = new SimpleDateFormat("MM-dd HH:mm");
         return dateformat.format(date);
