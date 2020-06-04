@@ -1,6 +1,7 @@
 package com.taichuan.code.tclog.write;
 
 import com.taichuan.code.tclog.bean.Log;
+import com.taichuan.code.tclog.cache.MemoryCache;
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.thread.TcLogGlobalThreadManager;
 
@@ -17,6 +18,7 @@ public class DiskWriteLogQueue {
     private boolean isLooping = false;
     private LogConfig logConfig;
     private List<OnDiskWriteFinishListener> onDiskWriteFinishListeners = new ArrayList<>();
+    private List<MemoryCache> memoryCacheList = new ArrayList<>();
 
     public DiskWriteLogQueue(LogConfig logConfig) {
         if (logConfig == null || logConfig.getDirPath() == null) {
@@ -53,15 +55,29 @@ public class DiskWriteLogQueue {
         onDiskWriteFinishListeners.remove(onDiskWriteFinishListener);
     }
 
+    public void addMemoryCache(MemoryCache memoryCache) {
+        memoryCacheList.add(memoryCache);
+    }
+
     private final Runnable executeRunnable = new Runnable() {
         @Override
         public void run() {
             while (isLooping) {
                 try {
                     if (logQueue.isEmpty()) {
-                        for (int i = 0; i < onDiskWriteFinishListeners.size(); i++) {
-                            OnDiskWriteFinishListener onDiskWriteFinishListener = onDiskWriteFinishListeners.get(i);
-                            onDiskWriteFinishListener.onFinish();
+                        boolean isHaveCache = false;
+                        for (int i = 0; i < memoryCacheList.size(); i++) {
+                            MemoryCache memoryCache = memoryCacheList.get(i);
+                            if (memoryCache.isHaveCache()) {
+                                isHaveCache = true;
+                                break;
+                            }
+                        }
+                        if (!isHaveCache) {
+                            for (int i = 0; i < onDiskWriteFinishListeners.size(); i++) {
+                                OnDiskWriteFinishListener onDiskWriteFinishListener = onDiskWriteFinishListeners.get(i);
+                                onDiskWriteFinishListener.onFinish();
+                            }
                         }
                     }
                     final Log log = logQueue.take();

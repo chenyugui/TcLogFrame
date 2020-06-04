@@ -3,10 +3,11 @@ package com.taichuan.code.tclog.writer;
 import android.text.TextUtils;
 
 import com.taichuan.code.tclog.bean.Log;
+import com.taichuan.code.tclog.cache.MemoryCache;
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.enums.LogVersion;
 import com.taichuan.code.tclog.enums.TimeFormat;
-import com.taichuan.code.tclog.exception.LogCacheFullException;
+import com.taichuan.code.tclog.exception.LogMemoryCacheFullException;
 import com.taichuan.code.tclog.exception.WriteLogErrException;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Vector;
  * @author gui
  * @date 2020/5/9
  */
-public class CacheLogWriter extends BaseLogWriter implements LogWriter {
+public class CacheLogWriter extends BaseLogWriter implements LogWriter, MemoryCache {
     private final String TAG = getClass().getSimpleName();
     private LogConfig logConfig;
     private List<Log> cacheLogList = new Vector<>();
@@ -44,7 +45,7 @@ public class CacheLogWriter extends BaseLogWriter implements LogWriter {
         addLog(log);
     }
 
-    private void addLog(Log log) throws LogCacheFullException {
+    private void addLog(Log log) throws LogMemoryCacheFullException {
         synchronized (lock) {
             long length = allLogLength
                     + TimeFormat.ALL_TIME.length()
@@ -52,7 +53,7 @@ public class CacheLogWriter extends BaseLogWriter implements LogWriter {
                     + (log.getTag() == null ? 0 : log.getTag().length())
                     + (log.getContent() == null ? 0 : log.getContent().length());
             if (length >= logConfig.getCacheMaxSize()) {
-                throw new LogCacheFullException("Cache is Full");
+                throw new LogMemoryCacheFullException("Cache is Full");
             } else {
                 cacheLogList.add(log);
                 allLogLength = length;
@@ -60,8 +61,14 @@ public class CacheLogWriter extends BaseLogWriter implements LogWriter {
         }
     }
 
+    @Override
     public List<Log> getCacheLogList() {
         return cacheLogList;
+    }
+
+    @Override
+    public boolean isHaveCache() {
+        return cacheLogList != null && cacheLogList.size() > 0;
     }
 
     public void clearCache() {

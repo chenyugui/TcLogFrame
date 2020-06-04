@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.enums.LogVersion;
-import com.taichuan.code.tclog.exception.LogCacheFullException;
+import com.taichuan.code.tclog.exception.LogMemoryCacheFullException;
 import com.taichuan.code.tclog.exception.WriteLogErrException;
 import com.taichuan.code.tclog.writer.CacheLogWriter;
 import com.taichuan.code.tclog.writer.CrashLogWriter;
@@ -28,12 +28,14 @@ public class LogWriteLogic {
     private CacheLogWriter cacheLogWriter;
     private DiskWriteLogQueue diskWriteLogQueue;
 
-    private static final Object LOCK = new Object();
-
     public LogWriteLogic(LogConfig logConfig) {
         this.logConfig = logConfig;
+        if (logConfig.isUseCache()) {
+            cacheLogWriter = new CacheLogWriter(logConfig);
+        }
         if (logConfig.isUseDiskSave()) {
             diskWriteLogQueue = new DiskWriteLogQueue(logConfig);
+            diskWriteLogQueue.addMemoryCache(cacheLogWriter);
             diskWriteLogQueue.startLoop();
         }
     }
@@ -83,15 +85,10 @@ public class LogWriteLogic {
             Log.e(tag, content);
         }
         if (logConfig.isUseCache()) {
-            synchronized (LOCK) {
-                if (cacheLogWriter == null) {
-                    cacheLogWriter = new CacheLogWriter(logConfig);
-                }
-            }
             try {
                 cacheLogWriter.write(logVersion, tag, content);
             } catch (WriteLogErrException e) {
-                if (e instanceof LogCacheFullException) {
+                if (e instanceof LogMemoryCacheFullException) {
                     // 内存缓存满了
                     if (logConfig.isUseDiskSave()) {
                         DiskLogWriter diskLogWriter = new DiskLogWriter(diskWriteLogQueue);
