@@ -21,11 +21,11 @@ import java.util.List;
  * @date 2020/5/19
  * 奔溃日志提取器
  */
-public class CrashLogExtracter extends BaseLogExtracter {
+public class CrashLogExtractor extends BaseLogExtractor {
     private LogConfig logConfig;
     private int extracterCount;
 
-    public CrashLogExtracter(int extracterCount, LogConfig logConfig) {
+    public CrashLogExtractor(int extracterCount, LogConfig logConfig) {
         this.extracterCount = extracterCount;
         this.logConfig = logConfig;
     }

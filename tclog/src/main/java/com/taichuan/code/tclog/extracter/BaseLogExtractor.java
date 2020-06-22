@@ -6,7 +6,7 @@ import android.os.Environment;
  * @author gui
  * @date 2020/5/19
  */
-public abstract class BaseLogExtracter implements LogExtracter {
+public abstract class BaseLogExtractor implements LogExtractor {
     private final String TAG = getClass().getSimpleName();
 
     private static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath();

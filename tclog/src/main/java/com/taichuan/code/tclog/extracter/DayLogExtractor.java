@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.thread.TcLogGlobalThreadManager;
 import com.taichuan.code.tclog.util.FileUtil;
-import com.taichuan.code.tclog.util.TimeUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,26 +13,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * @author gui
  * @date 2020/5/19
- * 按时间区间提取器。 时间具体到天
+ * 按日期Log提取器
  */
-public class TimeLogExtracter extends BaseLogExtracter {
-    private String beginDayString;
-    private String endDayString;
+public class DayLogExtractor extends BaseLogExtractor {
+    private String dayString;
     private LogConfig logConfig;
 
-    public TimeLogExtracter(String beginDayString, LogConfig logConfig) {
-        this(beginDayString, null, logConfig);
-    }
-
-    public TimeLogExtracter(String beginDayString, String endDayString, LogConfig logConfig) {
-        this.beginDayString = beginDayString;
-        this.endDayString = endDayString;
+    public DayLogExtractor(String dayString, LogConfig logConfig) {
+        this.dayString = dayString;
         this.logConfig = logConfig;
     }
 
@@ -52,19 +44,8 @@ public class TimeLogExtracter extends BaseLogExtracter {
             extractFail("dir err", extractCallBack);
             return;
         }
-        if (beginDayString == null || beginDayString.length() != "yyyy-MM-dd".length()) {
-            extractFail("beginDayString err", extractCallBack);
-            return;
-        }
-        if (endDayString != null && endDayString.length() != "yyyy-MM-dd".length()) {
-            extractFail("endDayString err", extractCallBack);
-            return;
-        }
-        if (endDayString == null) {
-            endDayString = TimeUtil.dateToyyyy_MM_dd(new Date());
-        }
-        if (endDayString.compareTo(beginDayString) < 0) {
-            extractFail("beginDayString > endDayString", extractCallBack);
+        if (dayString == null || dayString.length() != "yyyy-MM-dd_HH".length()) {
+            extractFail("dateString err", extractCallBack);
             return;
         }
         TcLogGlobalThreadManager.getInstance().addRun(new Runnable() {
@@ -82,15 +63,7 @@ public class TimeLogExtracter extends BaseLogExtracter {
                 }
                 List<File> targetFileList = new ArrayList<>();
                 for (File logFile : logFileList) {
-                    if (!logFile.isFile()) {
-                        continue;
-                    }
-                    if (logFile.getName().length() <= "yyyy-MM-dd".length()) {
-                        continue;
-                    }
-                    String fileDay = logFile.getName().substring(0, "yyyy-MM-dd".length());
-                    if (fileDay.compareTo(beginDayString) >= 0
-                            && fileDay.compareTo(endDayString) <= 0) {
+                    if (logFile.isFile() && logFile.getName().startsWith(dayString)) {
                         targetFileList.add(logFile);
                     }
                 }

@@ -17,7 +17,7 @@ import java.util.List;
  * <p>
  * logcat log提取器。 通过Logcat获取最近的log。
  */
-public class LogcatExtracter extends BaseLogExtracter {
+public class LogcatExtractor extends BaseLogExtractor {
     @Override
     public void extract(final ExtractCallBack extractCallBack) {
         TcLogGlobalThreadManager.getInstance().addRun(new Runnable() {

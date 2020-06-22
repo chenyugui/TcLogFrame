@@ -9,10 +9,6 @@ import com.taichuan.code.tclog.exception.WriteLogErrException;
  * @date 2020/5/9
  */
 public interface LogWriter {
-    /**
-     * @param tag
-     * @param content
-     */
     void write(@LogVersion int version, String tag, String content) throws WriteLogErrException;
 
     void write(@LogVersion int version, long time, String threadName, String tag, String content) throws WriteLogErrException;

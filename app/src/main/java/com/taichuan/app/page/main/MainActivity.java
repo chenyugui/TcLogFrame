@@ -9,7 +9,7 @@ import com.taichuan.app.R;
 import com.taichuan.code.app.AppGlobal;
 import com.taichuan.code.mvp.view.base.BaseActivity;
 import com.taichuan.code.tclog.TcLogger;
-import com.taichuan.code.tclog.extracter.LogExtracter;
+import com.taichuan.code.tclog.extracter.LogExtractor;
 
 import java.io.File;
 
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 TcLogger.d(TAG, i+"  ");
             }
         } else if (id == R.id.btnRead) {
-            TcLogger.extractByTime("2020-05-20", new LogExtracter.ExtractCallBack() {
+            TcLogger.extractByTime("2020-05-20", new LogExtractor.ExtractCallBack() {
                 @Override
                 public void onSuccess(final File logFile) {
                     Log.d(TAG, "extract onSuccess: ");
@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else if (id == R.id.btnTestCrash) {
             throw new RuntimeException("333333");
         } else if (id == R.id.btnReadCrash) {
-            TcLogger.extractCrashLog(new LogExtracter.ExtractCallBack() {
+            TcLogger.extractCrashLog(new LogExtractor.ExtractCallBack() {
                 @Override
                 public void onSuccess(final File logFile) {
                     Log.d(TAG, "extract onSuccess: ");

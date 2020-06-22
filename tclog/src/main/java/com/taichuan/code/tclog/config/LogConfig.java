@@ -9,22 +9,23 @@ import java.io.File;
  * @date 2020/5/9
  */
 public class LogConfig {
-    /*** 存储log的文件夹的最大容量(单位字节) */
-    private long dirMaxSize;
-    /*** log内存缓存的最大容量(单位字节) */
-    private long cacheMaxSize;
-    /*** 存储异常日志的文件夹的最大容量(单位字节) */
-    private long crashMaxSize;
-    /*** 存储log的文件夹的路径 */
-    private String dirPath;
-    /*** 存储奔溃日志的文件夹的路径 */
-    private String crashPath;
     /*** 是否使用内存缓存 */
     private boolean isUseCache;
     /*** 是否使用磁盘存储 */
     private boolean isUseDiskSave;
     /*** 是否存储奔溃日志 */
     private boolean isUseCrashSave;
+    /*** 存储log的文件夹的最大容量(单位字节) */
+    private long dirMaxSize;
+    /*** log内存缓存的最大容量(单位字节) */
+    private long cacheMaxSize;
+    /*** 存储奔溃日志的文件夹的最大容量(单位字节) */
+    private long crashMaxSize;
+    /*** 存储log的文件夹的路径 */
+    private String dirPath;
+    /*** 存储奔溃日志的文件夹的路径 */
+    private String crashPath;
+
 
     public long getDirMaxSize() {
         return dirMaxSize;

@@ -5,11 +5,11 @@ import android.content.Context;
 import com.taichuan.code.tclog.config.LogConfig;
 import com.taichuan.code.tclog.enums.LogVersion;
 import com.taichuan.code.tclog.exception.WriteLogErrException;
-import com.taichuan.code.tclog.extracter.CrashLogExtracter;
-import com.taichuan.code.tclog.extracter.DayLogExtracter;
-import com.taichuan.code.tclog.extracter.LogExtracter;
-import com.taichuan.code.tclog.extracter.LogcatExtracter;
-import com.taichuan.code.tclog.extracter.TimeLogExtracter;
+import com.taichuan.code.tclog.extracter.CrashLogExtractor;
+import com.taichuan.code.tclog.extracter.DayLogExtractor;
+import com.taichuan.code.tclog.extracter.LogExtractor;
+import com.taichuan.code.tclog.extracter.LogcatExtractor;
+import com.taichuan.code.tclog.extracter.TimeLogExtractor;
 import com.taichuan.code.tclog.write.LogWriteLogic;
 import com.taichuan.code.tclog.write.OnDiskWriteFinishListener;
 
@@ -70,8 +70,8 @@ public class TcLogger {
     /**
      * 从logcat读取日志
      */
-    public static void extractFromLogcat(LogExtracter.ExtractCallBack extractCallBack) {
-        LogExtracter logExtracter = new LogcatExtracter();
+    public static void extractFromLogcat(LogExtractor.ExtractCallBack extractCallBack) {
+        LogExtractor logExtracter = new LogcatExtractor();
         logExtracter.extract(extractCallBack);
     }
 
@@ -80,14 +80,14 @@ public class TcLogger {
      *
      * @param dateString 日期，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      */
-    public static void extractByDay(final String dateString, final LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractByDay(final String dateString, final LogExtractor.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");
             }
             return;
         }
-        final LogExtracter logExtracter = new DayLogExtracter(dateString, logConfig);
+        final LogExtractor logExtracter = new DayLogExtractor(dateString, logConfig);
         if (logWriteLogic.isHaveCache()) {
             OnDiskWriteFinishListener onDiskWriteFinishListener = new OnDiskWriteFinishListener() {
                 @Override
@@ -108,7 +108,7 @@ public class TcLogger {
      *
      * @param beginTime 开始时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      */
-    public static void extractByTime(String beginTime, LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractByTime(String beginTime, LogExtractor.ExtractCallBack extractCallBack) {
         extractByTime(beginTime, null, extractCallBack);
     }
 
@@ -118,14 +118,14 @@ public class TcLogger {
      * @param beginTime 开始时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-20"
      * @param endTime   结束时间，精确到某一天，要求固定格式为yyyy-MM-hh。 例如: "2020-05-25"
      */
-    public static void extractByTime(final String beginTime, final String endTime, final LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractByTime(final String beginTime, final String endTime, final LogExtractor.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");
             }
             return;
         }
-        final LogExtracter logExtracter = new TimeLogExtracter(beginTime, endTime, logConfig);
+        final LogExtractor logExtracter = new TimeLogExtractor(beginTime, endTime, logConfig);
         if (logWriteLogic.isHaveCache()) {
             OnDiskWriteFinishListener onDiskWriteFinishListener = new OnDiskWriteFinishListener() {
                 @Override
@@ -144,7 +144,7 @@ public class TcLogger {
     /**
      * 获取全部异常日志
      */
-    public static void extractCrashLog(LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractCrashLog(LogExtractor.ExtractCallBack extractCallBack) {
         extractCrashLog(0, extractCallBack);
     }
 
@@ -153,14 +153,14 @@ public class TcLogger {
      *
      * @param extracterCount 提取的日志数量
      */
-    public static void extractCrashLog(int extracterCount, LogExtracter.ExtractCallBack extractCallBack) {
+    public static void extractCrashLog(int extracterCount, LogExtractor.ExtractCallBack extractCallBack) {
         if (logConfig == null) {
             if (extractCallBack != null) {
                 extractCallBack.onFail("logConfig is null, please use init method");
             }
             return;
         }
-        CrashLogExtracter logExtracter = new CrashLogExtracter(extracterCount, logConfig);
+        CrashLogExtractor logExtracter = new CrashLogExtractor(extracterCount, logConfig);
         logExtracter.extract(extractCallBack);
     }
 }
